@@ -41,3 +41,8 @@ video {
   display: flex !important;
   height: 60vh !important;
 }
+.no-scroll-pre {
+  white-space: pre-wrap !important; /* Preserve whitespace and line breaks */
+  word-wrap: break-word !important; /* Break long words */
+  overflow-x: hidden !important; /* Hide horizontal overflow */
+}

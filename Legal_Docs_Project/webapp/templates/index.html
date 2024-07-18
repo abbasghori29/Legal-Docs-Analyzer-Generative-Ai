@@ -107,6 +107,7 @@
         .then((response) => response.json())
         .then((data) => {
           console.log("Success: ", data);
+          window.location.assign("{% url 'getAllDetails' %}");
         });
     }
   </script>
@@ -116,7 +117,7 @@
       strings: [
         "Welcome to the cutting-edge Legal Document Analyzer, an innovative tool designed to streamline and enhance the process of legal document review. <br><br> By simply uploading a PDF of your legal document, our advanced Language Learning Model (LLM) will take over, offering a comprehensive suite of features. <br><br> The LLM will swiftly summarize the document, extract key points, and meticulously evaluate potential risk factors. <br><br> Furthermore, leveraging an extensive clause database, it will intelligently suggest relevant clauses to enhance your document's robustness and compliance. <br><br> Experience a new era of legal document analysis that is efficient, insightful, and precise.",
       ],
-      typeSpeed: 50,
+      typeSpeed: 15,
     });
   </script>
   <script

@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path("",views.index),
-    path("upload_pdf",views.uploadPdf,name="upload_pdf")
+    path("upload_pdf",views.uploadPdf,name="upload_pdf"),
+    path("getAllDetails",views.mainApi,name="getAllDetails"),
 ]
 
