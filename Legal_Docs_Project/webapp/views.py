@@ -2,20 +2,13 @@ from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
-from django.conf import settings
-from langchain_community.document_loaders import DirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_core.output_parsers import StrOutputParser
 from langchain.prompts import PromptTemplate
 from langchain_google_genai import GoogleGenerativeAI
 from langchain_community.document_loaders import PyPDFLoader
-from langchain_community.document_loaders.csv_loader import CSVLoader
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_community.vectorstores import FAISS
-import numpy as np
-from sklearn.metrics.pairwise import cosine_similarity
-
-
 import re
 import os
 
@@ -30,7 +23,7 @@ def index(request):
     return render(request,"index.html")
 
 def getSummary(full_text):
-    llm = GoogleGenerativeAI(model="gemini-pro",google_api_key='AIzaSyDpbCpx4NQj9zrHZBg6zLPRB7oOD_IhsZA', temperature=0.7)
+    llm = GoogleGenerativeAI(model="gemini-pro",google_api_key='AIzaSyDpbCpx4NQj9zrHZBg6zLPRB7oOD_IhsZA', temperature=0.7,max_retries=100)
 
     # Define prompt template
     prompt_template = """
@@ -53,7 +46,7 @@ def getSummary(full_text):
     return result
 
 def getKeyPoints(full_text):
-    llm = GoogleGenerativeAI(model="gemini-1.5-pro",google_api_key='AIzaSyBFIDG4v2UWeRKdgrRd4cjdxZklygyD4tU', temperature=0.7)
+    llm = GoogleGenerativeAI(model="gemini-pro",google_api_key='AIzaSyBFIDG4v2UWeRKdgrRd4cjdxZklygyD4tU', temperature=0.7,max_retries=100)
 
     prompt_template = """
     You are a legal expert tasked with extracting key points from a legal document. Analyze the following legal text carefully first give a short 4 to 5 lines summary about document and then provide a comprehensive list of the most important points and please dont't make sub points of a point:
@@ -91,7 +84,7 @@ def getKeyPoints(full_text):
     return result
     
 def doRiskAssesment(full_text):
-    llm = GoogleGenerativeAI(model="gemini-1.5-pro",google_api_key='AIzaSyBUTrs8eF0ezuBNZfha7uKObjI2TFwnjaA', temperature=0.7)
+    llm = GoogleGenerativeAI(model="gemini-pro",google_api_key='AIzaSyBUTrs8eF0ezuBNZfha7uKObjI2TFwnjaA', temperature=0.7,max_retries=100)
 
     risk_criteria = {
     "Compliance issues": ["regulation", "compliance", "law", "licensing", "reporting requirements"],
@@ -152,7 +145,7 @@ def doRiskAssesment(full_text):
     return result
 
 def clauseSuggestions(full_text):
-    llm = GoogleGenerativeAI(model="gemini-1.5-pro",google_api_key='AIzaSyBc8hc0zlhxRlJibJaelx6Sm3uVYPEhntE', temperature=0.7)
+    llm = GoogleGenerativeAI(model="gemini-pro",google_api_key='AIzaSyBc8hc0zlhxRlJibJaelx6Sm3uVYPEhntE', temperature=0.7,max_retries=100)
     google_embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001",google_api_key='AIzaSyCAy9dh_mP21KL0FZvdfNFKuX4y6ZnBHHs')
     vector_db = FAISS.load_local("C:/Users/RTC/Desktop/clone/Legal-Docs-Analyzer-Generative-Ai/Legal_Docs_Project/webapp/faiss_index", google_embeddings,allow_dangerous_deserialization=True)
     docs = vector_db.similarity_search(full_text)
